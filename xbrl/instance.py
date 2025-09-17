@@ -765,6 +765,12 @@ def _parse_unit_elements(unit_elements: List[ET.Element]) -> dict:
                               divide.find('xbrli:unitNumerator/xbrli:measure', NAME_SPACES).text.strip(),
                               divide.find('xbrli:unitDenominator/xbrli:measure', NAME_SPACES).text.strip())
         unit_dict[unit_id] = unit
+    
+    # Add built-in "pure" unit if not already defined
+    # Some XBRL libraries expect this unit to exist by default for dimensionless values
+    if 'pure' not in unit_dict:
+        unit_dict['pure'] = SimpleUnit('pure', 'xbrli:pure')
+    
     return unit_dict
 
 
